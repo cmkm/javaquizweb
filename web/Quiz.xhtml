@@ -1,12 +1,97 @@
 <?xml version='1.0' encoding='UTF-8' ?>
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+ 
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html">
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
     <h:head>
-        <title>Facelet Title</title>
+        <title>Java Quiz</title>
+        
+        <!-- syntax highlighting -->
+        <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.11.0/styles/default.min.css"></link>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.11.0/highlight.min.js"></script>
     </h:head>
     <h:body>
         Hello from Facelets
+        
+        <h:outputText value="#{sessionBean.username}"/>
+        
+                
+        <c:if test="#{sessionBean.authenticated eq 'FALSE'}">
+        
+            You gotta log in!
+            
+            <h:form id="loginForm">
+                
+                <h:inputText label="Username" id="loginUsername" /><br/>
+                <h:inputSecret label="Password" id="loginPassword"/><br/>
+                <h:commandButton value="Log In" action="#{loginController.loginHandler(loginUsername, loginPassword)}" />
+                <h:commandButton value="Register" action="#{loginController.registrationHandler(loginUsername, loginPassword)}" />
+                
+            </h:form>
+            
+        </c:if>
+        
+        <c:if test="#{sessionBean.authenticated eq 'TRUE'}">
+        
+            Authenticated user! 
+            
+            <ul>
+            <ui:repeat var="chapter" value="#{chapters.chapters}">
+
+                <li><h:outputText value="#{chapter.chapterNo}"/> 
+                    <h:outputText value="#{chapter.chapterName}"/>
+                </li>
+
+            </ui:repeat>
+            </ul>
+        
+        <ul>
+        <ui:repeat var="question" value="#{questions.questions}">
+        
+            <li><h:outputText value="#{question.questionNo}"/>. 
+                <h:outputText value="#{question.questionText}"/>
+
+                    <!-- multi answer -->
+                    <h:selectManyCheckbox value="answerChoice" rendered="#{question.answerKey.length() gt 1}">
+                        <f:selectItem itemLabel="A. #{question.choiceA}" itemValue="A" rendered="#{not empty question.choiceA}"/>
+                        <f:selectItem itemLabel="B. #{question.choiceB}" itemValue="B" rendered="#{not empty question.choiceB}"/>
+                        <f:selectItem itemLabel="C. #{question.choiceC}" itemValue="C" rendered="#{not empty question.choiceC}"/>
+                        <f:selectItem itemLabel="D. #{question.choiceD}" itemValue="D" rendered="#{not empty question.choiceD}"/>
+                        <f:selectItem itemLabel="E. #{question.choiceE}" itemValue="E" rendered="#{not empty question.choiceE}"/>
+
+
+                        <!-- <c:forEach var="answer" items="#{question.answers}">
+                            <f:selectItem itemLabel="#{answer.key}. #{answer.value}" itemValue="#{answer.key}"/>
+                        </c:forEach> -->
+                    </h:selectManyCheckbox>
+                    
+                    <!-- single answer -->
+                    <h:selectOneRadio value="answerChoice" rendered="#{question.answerKey.length() eq 1}">
+                        <f:selectItem itemLabel="A. #{question.choiceA}" itemValue="A" rendered="#{not empty question.choiceA}"/>
+                        <f:selectItem itemLabel="B. #{question.choiceB}" itemValue="B" rendered="#{not empty question.choiceB}"/>
+                        <f:selectItem itemLabel="C. #{question.choiceC}" itemValue="C" rendered="#{not empty question.choiceC}"/>
+                        <f:selectItem itemLabel="D. #{question.choiceD}" itemValue="D" rendered="#{not empty question.choiceD}"/>
+                        <f:selectItem itemLabel="E. #{question.choiceE}" itemValue="E" rendered="#{not empty question.choiceE}"/>
+                    </h:selectOneRadio>
+
+                    <f:ajax listener="#{submissionController.submitQuestion(question, answer)}">
+                        <h:commandButton value="Check question #{question.questionNo}" />
+                        <!-- display image based on submission -->
+                    </f:ajax>
+
+                </li>
+            
+            </ui:repeat>
+            </ul>
+
+        </c:if>
+        
+ 
+
     </h:body>
 </html>
 
