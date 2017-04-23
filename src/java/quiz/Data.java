@@ -11,7 +11,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -30,8 +32,9 @@ import javax.faces.context.FacesContext;
 public class Data implements Serializable {
     
     private int selectedChapter;
-    private static ArrayList<QuestionBean> questions;
-    
+    private ArrayList<QuestionBean> questions;
+    private String username = "tim";
+    private String hostname;
 
     /**
      * Creates a new instance of Data
@@ -59,6 +62,7 @@ public class Data implements Serializable {
         return this.selectedChapter;
     }
     
+    // populate list of questions based on selected chapter
     public void populateQuestions(int chapter) {
         ArrayList<QuestionBean> fetchedQuestions = new ArrayList<>();
         Connection connection = DatabaseController.getConnection();
@@ -93,6 +97,9 @@ public class Data implements Serializable {
         return questions;
     }
     
+    public String getUsername() {
+        return this.username;
+    }
         
     // Handle submission of entire chapter at once
     public HashMap submitChapter() {
@@ -107,17 +114,15 @@ public class Data implements Serializable {
             // no response to question, skip it
             if (q.getSelectedAnswerSingle() == null 
                     && q.getSelectedAnswersMulti().isEmpty()) {
-                System.out.println("breaking out");
                 continue;
             }
             
-            System.out.println("bump");
             questionsSubmitted++;
             isCorrect = q.gradeQuestion();
+            recordAttempt(q);
             
             if (isCorrect) {
                 questionsCorrect++;
-                System.out.println("Correct?: " + isCorrect);
             }
         }
         
@@ -125,6 +130,106 @@ public class Data implements Serializable {
         results.put("Correct", questionsCorrect);
         
         return results;
+    }
+    
+    public String logout() {
+        this.username = null;
+        return "/Login.xhtml";
+    }
+    
+    public void recordAttempt(QuestionBean question) {
+        Connection connection = DatabaseController.getConnection();
+        
+        try {
+            // check if there is an existing attempt to update
+            PreparedStatement checkps = connection.prepareStatement(
+                    "select * from intro10e where chapterNo = ? and " + 
+                    "questionNo = ? and username = ?");
+            // insert a new attempt
+            PreparedStatement newps = connection.prepareStatement(
+                    "insert into intro10e (chapterNo, questionNo, isCorrect, time, " + 
+                    "hostName, answerA, answerB, answerC, answerD, answerE, " + 
+                    "username) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+            // update an existing attempt
+            PreparedStatement updateps = connection.prepareStatement(
+                    "update intro10e set isCorrect = ?, time = ?, hostName = ?, " + 
+                    "answerA = ?, answerB = ?, answerC = ?, answerD = ?, " + 
+                    "answerE = ? where chapterNo = ? and questionNo = ? and username = ?");
+            
+            checkps.setInt(1, getSelectedChapter());
+            checkps.setInt(2, question.getQuestionNo());
+            checkps.setString(3, getUsername());
+            ResultSet checkrs = checkps.executeQuery();
+            Date date = new Date();
+            String answerSingle = question.getSelectedAnswerSingle();
+            List<String> answersMulti = question.getSelectedAnswersMulti();
+            String answersString = answersMulti.isEmpty() ? answerSingle : question.stringifySelectedAnswersMulti();
+            Timestamp time = new Timestamp(date.getTime());
+                    
+            if (checkrs.next()) {
+                // update
+                updateps.setBoolean(1, question.getIsCorrect());
+                updateps.setTimestamp(2, time);
+                updateps.setString(3, hostname);
+                updateps.setInt(9, selectedChapter);
+                updateps.setInt(10, question.getQuestionNo());
+                updateps.setString(11, username);
+                
+                if (answersString.length() == 1) {
+                    // single
+                    updateps.setBoolean(4, answerSingle.equalsIgnoreCase("A"));
+                    updateps.setBoolean(5, answerSingle.equalsIgnoreCase("B"));
+                    updateps.setBoolean(6, answerSingle.equalsIgnoreCase("C"));
+                    updateps.setBoolean(7, answerSingle.equalsIgnoreCase("D"));
+                    updateps.setBoolean(8, answerSingle.equalsIgnoreCase("E"));
+
+                } else {
+                    // multi
+                    updateps.setBoolean(4, answersString.contains("A"));
+                    updateps.setBoolean(5, answersString.contains("B"));
+                    updateps.setBoolean(6, answersString.contains("C"));
+                    updateps.setBoolean(7, answersString.contains("D"));
+                    updateps.setBoolean(8, answersString.contains("E"));
+                }
+
+                System.out.println(updateps);
+                int updaters = updateps.executeUpdate();
+
+            } else {
+                // insert
+                newps.setInt(1, selectedChapter);
+                newps.setInt(2, question.getQuestionNo());
+                newps.setBoolean(3, question.getIsCorrect());
+                newps.setTimestamp(4, time);
+                newps.setString(5, hostname);
+                newps.setString(11, username);
+                
+                if (answersString.length() == 1) {
+                    // single
+                    newps.setBoolean(4, answerSingle.equalsIgnoreCase("A"));
+                    newps.setBoolean(5, answerSingle.equalsIgnoreCase("B"));
+                    newps.setBoolean(6, answerSingle.equalsIgnoreCase("C"));
+                    newps.setBoolean(7, answerSingle.equalsIgnoreCase("D"));
+                    newps.setBoolean(8, answerSingle.equalsIgnoreCase("E"));
+                
+                } else {
+                    // multi        
+                    newps.setBoolean(6, answersString.contains("A"));
+                    newps.setBoolean(7, answersString.contains("B"));
+                    newps.setBoolean(8, answersString.contains("B"));
+                    newps.setBoolean(9, answersString.contains("C"));
+                    newps.setBoolean(10, answersString.contains("D"));
+                }
+                
+                System.out.println(newps);
+                int newrs = newps.executeUpdate();
+
+            }
+        } catch (SQLException ex) {
+            System.out.println("DB issue: " + ex.getMessage());
+        } finally {
+            DatabaseController.close(connection);
+        }
     }
     
 }

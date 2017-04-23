@@ -23,6 +23,7 @@ import javax.enterprise.context.SessionScoped;
 @SessionScoped
 public class QuestionBean implements Serializable {
     private int questionNo;
+    private int chapterNo;
     private String questionText;
     private String choiceA;
     private String choiceB;
@@ -71,6 +72,10 @@ public class QuestionBean implements Serializable {
     
     public int getQuestionNo() {
         return this.questionNo;
+    }
+    
+    public int getChapterNo() {
+        return this.chapterNo;
     }
     
     public String getQuestionText() {
