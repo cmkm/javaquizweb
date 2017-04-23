@@ -5,6 +5,7 @@
  */
 package quiz;
 
+import javax.annotation.PostConstruct;
 import javax.inject.Named;
 import javax.enterprise.context.Dependent;
 
@@ -18,13 +19,16 @@ public class ChapterBean {
     
     private int chapterNo;
     private String chapterName;
-
-    /**
-     * Creates a new instance of ChapterBean
-     */
+    private boolean selected;
+    
     public ChapterBean(int chapterNo, String chapterName) {
         this.chapterNo = chapterNo;
         this.chapterName = chapterName;
+    }
+    
+    @PostConstruct
+    public void init() {
+        selected = false;
     }
     
     public int getChapterNo() {
@@ -33,6 +37,14 @@ public class ChapterBean {
     
     public String getChapterName() {
         return chapterName;
+    }
+    
+    public boolean isSelected() {
+        return this.selected;
+    }
+    
+    public void setSelected(boolean selected) {
+        this.selected = selected;
     }
     
 }

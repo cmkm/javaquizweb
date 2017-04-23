@@ -6,6 +6,7 @@
 package quiz;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import javax.inject.Named;
 import javax.enterprise.context.Dependent;
@@ -24,10 +25,8 @@ public class Questions {
      * Creates a new instance of Questions
      */
     public Questions() {
-        this.questions.add(new QuestionBean(1, "test questoin?", "foo", "bar", 
-            "baz", "foo2", "bar2", "A", "this is a hint"));
-        this.questions.add(new QuestionBean(2, "hello world?", "foo", "bar", 
-            "baz", "foo2", "bar2", "A", "this is a hint"));
+        // import from db
+        
     }
     
     public List<QuestionBean> getQuestions() {
@@ -37,5 +36,5 @@ public class Questions {
     public void setQuestions(List<QuestionBean> questions) {
         this.questions = questions;
     }
-    
+
 }

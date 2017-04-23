@@ -92,6 +92,7 @@ public class SessionBean implements Serializable {
                 return null;
     }
     
+    /** 
     public String validateCredentials() {
         boolean valid = LoginController.validate(username, password);
         if (valid) {
@@ -102,7 +103,7 @@ public class SessionBean implements Serializable {
             HttpServletRequest origRequest = 
                     (HttpServletRequest)FacesContext.getCurrentInstance()
                             .getExternalContext().getRequest();
-            session.setAttribute("hostname", origRequest.getRemoteAddr());
+            // session.setAttribute("hostname", origRequest.getRemoteAddr());
             return "authenticated";
         } else {
             
@@ -115,11 +116,8 @@ public class SessionBean implements Serializable {
             return "login";
         }
     }
+    **/
     
-    public String logout() {
-        HttpSession session = getSession();
-        session.invalidate();
-        return "login";
-    }
+
     
 }
