@@ -110,6 +110,14 @@ public class Login implements Serializable {
     
     // called from registration form at Register.xhtml
     public String register() {
+        if (username == null || password == null) {
+            FacesContext.getCurrentInstance().addMessage(null, 
+                new FacesMessage(FacesMessage.SEVERITY_ERROR, 
+                    "Can't register without username and password", null));
+
+            return "/Register.xhtml";
+        }
+        
         Connection connection = DatabaseController.getConnection();
         
         try {

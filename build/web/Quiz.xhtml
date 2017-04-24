@@ -9,7 +9,8 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core">
     <h:head>
         <title>Java Quiz</title>
-        <link rel="stylesheet" href="style.css"></link>
+        <link rel="stylesheet" href="css/bttn.min.css"></link>
+        <link rel="stylesheet" href="css/style.css"></link>
         
         <!-- syntax highlighting -->
         <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.11.0/styles/monokai-sublime.min.css"></link>
@@ -78,7 +79,8 @@
                     </h:selectOneRadio>
                     
                     <h:commandButton action="#{question.gradeQuestion()}" 
-                                     value="Check Question #{question.questionNo}"/>
+                                     value="Check Question #{question.questionNo}"
+                                     class="btn-submit-question" />
                     
                     <!-- display outcome of submitted questiosn -->
                     <h:outputText value="Correct: #{question.isCorrect}" 
@@ -91,9 +93,12 @@
             
         </ul>
             
-        <h:commandButton action="#{data.submitChapter()}" 
+        <div class="center">
+            <h:commandButton action="#{data.submitChapter()}" 
                          value="Check All Questions"
-                         rendered="#{not empty data.questions}"/>
+                         rendered="#{not empty data.questions}"
+                         class="btn-submit-chapter" />
+        </div>
 
         </h:form>
  

@@ -12,10 +12,15 @@ body {
     font-size: 16px;
     font-family: "Helvetica Neue", Calibri, sans-serif;
     margin: 2em 2em auto;
+    background: ghostwhite;
 }
 
 h1 {
     padding: 1em;
+}
+
+a {
+    color: darkorchid;
 }
 
 .quiz {
@@ -28,10 +33,37 @@ h1 {
         border: 1px solid pink;
         margin: 1em 0 1em 0;
     }
+    
+    .quiz table {
+        margin: 0.2em;
+    }
 
+    /*
 button, 
 input[type="submit"] {
     font-size: 16px;
     padding: 0.1em;
+    border: 1px solid pink;
+    background: pink;
+    color: white;
+}*/
+
+.center {
+    text-align: center;
+}
+
+.btn-submit-chapter, 
+.btn-submit-question {
+
+
 }
     
+.btn-submit-chapter {
+    font-size: 1.2em;
+    margin: 0 auto;
+}
+
+input {
+    font-size: 16px;
+    margin: 0.2em;
+}
