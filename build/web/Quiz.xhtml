@@ -36,7 +36,7 @@
         
         <h:form rendered="#{data.selectedChapter != 0}">
             
-        <h:outputText value="#{data.username}"/><h:commandLink action="#{login.logout()}" value="Log out"/>
+        <h:outputText value="#{login.username}"/><h:commandLink action="#{login.logout()}" value="Log out"/>
             
         <h2><h:outputText value="Chapter #{data.selectedChapter} Quiz " 
                           rendered="#{data.selectedChapter != 0}"/></h2>
