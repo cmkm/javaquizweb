@@ -30,15 +30,13 @@ import javax.faces.context.FacesContext;
  * @author cmkm
  */
 @Named(value = "data")
-@ManagedBean(name = "data")
+@ManagedBean(name = "data",eager=true)
 @SessionScoped
 public class Data implements Serializable {
     private int selectedChapter;
     private ArrayList<QuestionBean> questions;
-
     @ManagedProperty(value="#{login.username}")
     private String username;
-    
     private String hostname;
 
 

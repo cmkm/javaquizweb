@@ -86,7 +86,10 @@
         </ul>
             
         <h:commandButton action="#{data.submitChapter()}" 
-                         value="Check All Questions" />
+                         value="Check All Questions" /><br/>
+
+        <h:commandLink action="#{data.setSelectedChapter(0)}" 
+                       value="Back to chapter index"/>
 
 
         </h:form>
