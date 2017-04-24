@@ -20,6 +20,8 @@ import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 
@@ -28,23 +30,18 @@ import javax.faces.context.FacesContext;
  * @author cmkm
  */
 @Named(value = "data")
+@ManagedBean(name = "data")
 @SessionScoped
 public class Data implements Serializable {
-    
     private int selectedChapter;
     private ArrayList<QuestionBean> questions;
-    private String username = "tim";
+
+    @ManagedProperty(value="#{login.username}")
+    private String username;
+    
     private String hostname;
 
-    /**
-     * Creates a new instance of Data
-     */
-    public Data() {
-        ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
-        Map<String, Object> sessionMap = externalContext.getSessionMap();
-        sessionMap.put("selectedChapter", selectedChapter);
-        sessionMap.put("questions", questions);
-    }
+
     
 //    @PostConstruct
 //    public void init() {
@@ -53,7 +50,6 @@ public class Data implements Serializable {
     
     public void setSelectedChapter(int chapter) {
         selectedChapter = chapter;
-        System.out.println("imhere");
         System.out.println("chapter: " + selectedChapter);
         populateQuestions(chapter);
     }
@@ -130,11 +126,6 @@ public class Data implements Serializable {
         results.put("Correct", questionsCorrect);
         
         return results;
-    }
-    
-    public String logout() {
-        this.username = null;
-        return "/Login.xhtml";
     }
     
     public void recordAttempt(QuestionBean question) {

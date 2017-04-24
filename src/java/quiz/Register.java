@@ -6,21 +6,20 @@
 package quiz;
 
 import javax.inject.Named;
-import javax.enterprise.context.SessionScoped;
-import java.io.Serializable;
+import javax.enterprise.context.Dependent;
 
 /**
  *
  * @author cmkm
  */
-@Named(value = "userBean")
-@SessionScoped
-public class UserBean implements Serializable {
+@Named(value = "register")
+@Dependent
+public class Register {
 
     /**
-     * Creates a new instance of UserBean
+     * Creates a new instance of Register
      */
-    public UserBean() {
+    public Register() {
     }
     
 }
