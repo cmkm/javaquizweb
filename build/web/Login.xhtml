@@ -12,7 +12,9 @@ and open the template in the editor.
       xmlns:f="http://xmlns.jcp.org/jsf/core">
     <h:head>
         <title>Java Quiz</title>
-        <link rel="stylesheet" href="style.css"></link>
+        <link rel="stylesheet" href="css/bttn.min.css"></link>
+        <link rel="stylesheet" href="css/style.css"></link>
+
         
         <!-- syntax highlighting -->
         <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.11.0/styles/default.min.css"></link>
@@ -25,10 +27,12 @@ and open the template in the editor.
         
         <h:form>
             
-            <h:outputText value="Username"/><br/>
+            <strong>Username</strong><br/>
             <h:inputText label="Username" value="#{login.username}"/><br/>
-            <h:outputText value="Password"/><br/>
+            
+            <strong>Password</strong><br/>
             <h:inputSecret label="Password" value="#{login.password}"/><br/>
+            
             <h:commandButton action="#{login.submit()}" value="Log In"/>
             <h:button outcome="Register" value="Register"/>
             

@@ -9,10 +9,11 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core">
     <h:head>
         <title>Java Quiz</title>
-        <link rel="stylesheet" href="style.css"></link>
+        <link rel="stylesheet" href="css/bttn.min.css"></link>
+        <link rel="stylesheet" href="css/style.css"></link>
         
         <!-- syntax highlighting -->
-        <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.11.0/styles/default.min.css"></link>
+        <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.11.0/styles/monokai-sublime.min.css"></link>
         <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.11.0/highlight.min.js"></script>
     </h:head>
     
@@ -27,19 +28,28 @@
         <h:outputText value="Data #{data.selectedChapter}"/><br/>-->
        
         
-        
+        <!-- Chapter index: choose your fighter -->
         <h:form rendered="#{data.selectedChapter == 0}">
-<!--            <h:commandLink value="Chapter 1" action="#{sessionScope.put('selectedChapter', 1)}"/>-->
+            <h2>Chapters</h2>
+            <p>Welcome to the quiz. Please choose a chapter to begin.</p>
             <h:commandLink value="Chapter 1" action="#{data.setSelectedChapter(1)}"/><br/>
             <h:commandLink value="Chapter 2" action="#{data.setSelectedChapter(2)}"/>
+
         </h:form>
         
+        
+        <!-- Quiz form -->
         <h:form rendered="#{data.selectedChapter != 0}">
             
-        <h:outputText value="#{login.username}"/><h:commandLink action="#{login.logout()}" value="Log out"/>
+            <h2><h:outputText value="Chapter #{data.selectedChapter} Quiz " 
+                              rendered="#{data.selectedChapter != 0}"/></h2>
+                              
+            <p><h:commandLink action="#{data.setSelectedChapter(0)}" 
+                              value="Select another chapter"/></p>
             
-        <h2><h:outputText value="Chapter #{data.selectedChapter} Quiz " 
-                          rendered="#{data.selectedChapter != 0}"/></h2>
+            <h:outputText value="Sorry, there are no questions for chapter 
+                          #{data.selectedChapter}. Please choose a different chapter." 
+                          rendered="#{empty data.questions}"/>
         
         <ul class="quiz">
                         
@@ -50,7 +60,7 @@
 
         
             <li><h:outputText value="#{question.questionNo}"/>. 
-                <h:outputText value="#{question.questionText}"/>
+                <h:outputText value="#{question.questionText}" escape="false"/>
                     
                     <!-- http://stackoverflow.com/a/10656919 -->
                     <!-- multi answer -->
@@ -72,7 +82,8 @@
                     </h:selectOneRadio>
                     
                     <h:commandButton action="#{question.gradeQuestion()}" 
-                                     value="Check Question #{question.questionNo}"/>
+                                     value="Check Question #{question.questionNo}"
+                                     class="btn-submit-question" />
                     
                     <!-- display outcome of submitted questiosn -->
                     <h:outputText value="Correct: #{question.isCorrect}" 
@@ -85,8 +96,12 @@
             
         </ul>
             
-        <h:commandButton action="#{data.submitChapter()}" 
-                         value="Check All Questions" /><br/>
+        <div class="center">
+            <h:commandButton action="#{data.submitChapter()}" 
+                         value="Check All Questions"
+                         rendered="#{not empty data.questions}"
+                         class="btn-submit-chapter" />
+        </div>
 
         <h:commandLink action="#{data.setSelectedChapter(0)}" 
                        value="Back to chapter index"/>
@@ -96,5 +111,8 @@
  
 
     </h:body>
+    
+    <script>hljs.initHighlightingOnLoad();</script>
+
 </html>
 

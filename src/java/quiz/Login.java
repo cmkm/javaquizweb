@@ -25,7 +25,6 @@ import javax.faces.context.FacesContext;
  * 
  * https://maxkatz.org/2009/08/17/learning-jsf2-managed-beans/
  */
-@Named(value = "login")
 @ManagedBean(name = "login", eager=true)
 @SessionScoped
 public class Login implements Serializable {
@@ -111,6 +110,14 @@ public class Login implements Serializable {
     
     // called from registration form at Register.xhtml
     public String register() {
+        if (username == null || password == null) {
+            FacesContext.getCurrentInstance().addMessage(null, 
+                new FacesMessage(FacesMessage.SEVERITY_ERROR, 
+                    "Can't register without username and password", null));
+
+            return "/Register.xhtml";
+        }
+        
         Connection connection = DatabaseController.getConnection();
         
         try {

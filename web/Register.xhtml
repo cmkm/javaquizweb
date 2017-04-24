@@ -12,8 +12,10 @@ and open the template in the editor.
       xmlns:f="http://xmlns.jcp.org/jsf/core">
     <h:head>
         <title>Java Quiz</title>
-        <link rel="stylesheet" href="style.css"></link>
-        
+        <link rel="stylesheet" href="css/bttn.min.css"></link>
+        <link rel="stylesheet" href="css/style.css"></link>
+
+               <link rel="stylesheet" href="css/style.css"></link>
         <!-- syntax highlighting -->
         <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.11.0/styles/default.min.css"></link>
         <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.11.0/highlight.min.js"></script>
@@ -21,23 +23,28 @@ and open the template in the editor.
     
     <h:body>
         
-        <p>Please provide the following details to register.</p>
-        
-        <h:form>
-            
-            <h:outputText value="Username"/><br/>
-            <h:inputText label="Username" value="#{login.username}"/><br/>
-            <h:outputText value="Password"/><br/>
-            <h:inputSecret label="Password" value="#{login.password}"/><br/>
-            <h:outputText value="First Name"/><br/>
-            <h:inputText label="First Name" value="#{login.firstName}"/><br/>
-            <h:outputText value="MI"/>
-            <h:inputText label="MI" value="#{login.middleInitial}"/><br/>
-            <h:outputText value="Last Name"/><br/>
-            <h:inputText label="Last Name" value="#{login.lastName}"/><br/>
-            
-            <h:commandButton action="#{login.register}" value="Register"/>
-            
-        </h:form>
+        <div class="center">
+            <p><h:link outcome="/Login" value="Return to login"/></p>
+            <p>Please provide the following details to register.</p>
+
+            <h:form>
+
+                <h:outputText value="Username"/><br/>
+                <h:inputText label="Username" value="#{login.username}"/><br/>
+                <h:outputText value="Password"/><br/>
+                <h:inputSecret label="Password" value="#{login.password}"/><br/>
+                <h:outputText value="First Name"/><br/>
+                <h:inputText label="First Name" value="#{login.firstName}"/><br/>
+                <h:outputText value="MI"/>
+                <h:inputText label="MI" value="#{login.middleInitial}"/><br/>
+                <h:outputText value="Last Name"/><br/>
+                <h:inputText label="Last Name" value="#{login.lastName}"/><br/>
+
+                <h:commandButton action="#{login.register}" 
+                                 value="Register"
+                                 class="bttn-gradient bttn-md"/>
+
+            </h:form>
+        </div>
     </h:body>
 </html>
