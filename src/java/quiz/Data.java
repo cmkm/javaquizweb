@@ -24,7 +24,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
-import org.apache.commons.lang3.StringEscapeUtils;
+import javax.servlet.http.HttpServletRequest;
 
 /**
  *
@@ -44,16 +44,14 @@ public class Data implements Serializable {
      * Creates a new instance of Data
      */
     public Data() {
-        ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
-        Map<String, Object> sessionMap = externalContext.getSessionMap();
-        sessionMap.put("selectedChapter", selectedChapter);
-        sessionMap.put("questions", questions);
     }
     
-//    @PostConstruct
-//    public void init() {
-//        populateQuestions((Integer)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("selectedChapter"));
-//    }
+    @PostConstruct
+    public void init() {
+        HttpServletRequest origRequest = (HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest();
+        String remotehost = origRequest.getRemoteAddr();
+        this.hostname = remotehost;
+    }
     
     public void setSelectedChapter(int chapter) {
         selectedChapter = chapter;
@@ -77,9 +75,6 @@ public class Data implements Serializable {
             ResultSet rs = ps.executeQuery();
                     
             while (rs.next()) {
-                String raw = rs.getString("question");
-                System.out.println(raw);
-                
                 fetchedQuestions.add(new QuestionBean(rs.getInt("questionNo"), 
                         rs.getString("question"), rs.getString("choiceA"), 
                         rs.getString("choiceB"), rs.getString("choiceC"), 
@@ -114,6 +109,14 @@ public class Data implements Serializable {
     
     public void setResults(HashMap<String, Integer> results) {
         this.results = results;
+    }
+    
+    public String getHostname() {
+        return this.hostname;
+    }
+    
+    public void setHostname(String hostname) {
+        this.hostname = hostname;
     }
         
     // Handle submission of entire chapter at once

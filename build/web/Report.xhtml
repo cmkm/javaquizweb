@@ -58,6 +58,7 @@ and open the template in the editor.
         <h:link outcome="Quiz.xhtml?chapter=0" 
                        value="Select another chapter"/><br/>
         
+        <p>Your grade: #{(data.results.get("Correct") / data.results.get("Total")) * 100}%</p>
         
         <div id="piechart" class="center" style="width: 700px; height: 500px;"></div>
     
