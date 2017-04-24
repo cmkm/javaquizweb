@@ -38,6 +38,7 @@ public class Data implements Serializable {
     private ArrayList<QuestionBean> questions;
     private String username;
     private String hostname;
+    private HashMap<String, Integer> results;
 
     /**
      * Creates a new instance of Data
@@ -106,13 +107,21 @@ public class Data implements Serializable {
     public String getUsername() {
         return this.username;
     }
+    
+    public HashMap<String, Integer> getResults() {
+        return this.results;
+    }
+    
+    public void setResults(HashMap<String, Integer> results) {
+        this.results = results;
+    }
         
     // Handle submission of entire chapter at once
-    public HashMap submitChapter() {
+    public String submitChapter() {
         int questionsSubmitted = 0;
         int questionsCorrect = 0;
         boolean isCorrect; 
-        HashMap<String, Integer> results = new HashMap<>();
+        HashMap<String, Integer> report = new HashMap<>();
         
         for (QuestionBean q: questions) {
             System.out.println(q.toString());
@@ -132,10 +141,12 @@ public class Data implements Serializable {
             }
         }
         
-        results.put("Total", questionsSubmitted);
-        results.put("Correct", questionsCorrect);
-        
-        return results;
+        report.put("Total", questionsSubmitted);
+        report.put("Correct", questionsCorrect);
+        report.put("Incorrect", (questionsSubmitted - questionsCorrect));
+
+        this.results = report;
+        return "/Report.xhtml";
     }
     
     public String logout() {
@@ -212,19 +223,19 @@ public class Data implements Serializable {
                 
                 if (answersString.length() == 1) {
                     // single
-                    newps.setBoolean(4, answerSingle.equalsIgnoreCase("A"));
-                    newps.setBoolean(5, answerSingle.equalsIgnoreCase("B"));
-                    newps.setBoolean(6, answerSingle.equalsIgnoreCase("C"));
-                    newps.setBoolean(7, answerSingle.equalsIgnoreCase("D"));
-                    newps.setBoolean(8, answerSingle.equalsIgnoreCase("E"));
+                    newps.setBoolean(6, answerSingle.equalsIgnoreCase("A"));
+                    newps.setBoolean(7, answerSingle.equalsIgnoreCase("B"));
+                    newps.setBoolean(8, answerSingle.equalsIgnoreCase("C"));
+                    newps.setBoolean(9, answerSingle.equalsIgnoreCase("D"));
+                    newps.setBoolean(10, answerSingle.equalsIgnoreCase("E"));
                 
                 } else {
                     // multi        
                     newps.setBoolean(6, answersString.contains("A"));
                     newps.setBoolean(7, answersString.contains("B"));
-                    newps.setBoolean(8, answersString.contains("B"));
-                    newps.setBoolean(9, answersString.contains("C"));
-                    newps.setBoolean(10, answersString.contains("D"));
+                    newps.setBoolean(8, answersString.contains("C"));
+                    newps.setBoolean(9, answersString.contains("D"));
+                    newps.setBoolean(10, answersString.contains("E"));
                 }
                 
                 System.out.println(newps);

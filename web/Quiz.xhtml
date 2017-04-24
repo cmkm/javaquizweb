@@ -17,17 +17,15 @@
         <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.11.0/highlight.min.js"></script>
     </h:head>
     
-    <f:metadata>
-        <f:viewParam id="chapterNo" name="chapter" value="#{sessionBean.selectedChapter}"/>
-    </f:metadata>
-    
     <h:body>
-        <c:set var="CHAPTERS" value="3" scope="application"/>
-        
-        <!-- http://stackoverflow.com/a/4495522 -->
-<!--        <h:outputText value="Chapter #{sessionScope.get('selectedChapter')}"/><br/>
-        <h:outputText value="SessionBean #{sessionBean.selectedChapter}"/><br/>
-        <h:outputText value="Data #{data.selectedChapter}"/><br/>-->
+        <div class="header">
+            <h:form>
+                <p>Welcome #{login.username}!</p>
+            
+                <h:commandLink action="#{login.logout()}" value="Log out"/>
+            
+            </h:form>
+        </div>
         
         <!-- Chapter index: choose your fighter -->
         <h:form rendered="#{data.selectedChapter == 0}">
@@ -82,9 +80,16 @@
                                      value="Check Question #{question.questionNo}"
                                      class="btn-submit-question" />
                     
+                    
                     <!-- display outcome of submitted questiosn -->
-                    <h:outputText value="Correct: #{question.isCorrect}" 
+
+                    
+<h:outputText value="Correct: #{question.isCorrect}" 
                                   rendered="#{question.isCorrect != null}"/>
+                    
+
+
+
 
                 </li>
             

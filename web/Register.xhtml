@@ -23,28 +23,28 @@ and open the template in the editor.
     
     <h:body>
         
-        <div class="center">
-            <p><h:link outcome="/Login" value="Return to login"/></p>
-            <p>Please provide the following details to register.</p>
+        <p><h:link outcome="/Login" value="Return to login"/></p>
+        <p>Please provide the following details to register.</p>
 
-            <h:form>
+        <h:form>
 
-                <h:outputText value="Username"/><br/>
-                <h:inputText label="Username" value="#{login.username}"/><br/>
-                <h:outputText value="Password"/><br/>
-                <h:inputSecret label="Password" value="#{login.password}"/><br/>
-                <h:outputText value="First Name"/><br/>
-                <h:inputText label="First Name" value="#{login.firstName}"/><br/>
-                <h:outputText value="MI"/>
-                <h:inputText label="MI" value="#{login.middleInitial}"/><br/>
-                <h:outputText value="Last Name"/><br/>
-                <h:inputText label="Last Name" value="#{login.lastName}"/><br/>
+            <strong>Username</strong><br/>
+            <h:inputText label="Username" value="#{login.username}" 
+                         required="true" requiredMessage="Username is required"/><br/>
+            <strong>Password</strong><br/>
+            <h:inputSecret label="Password" value="#{login.password}" 
+                           required="true" requiredMessage="Password is required"/><br/>
+            <strong>First Name</strong><br/>
+            <h:inputText label="First Name" value="#{login.firstName}"/><br/>
+            <strong>Middle Initial</strong><br/>
+            <h:inputText label="MI" value="#{login.middleInitial}"/><br/>
+            <strong>Last Name</strong><br/>
+            <h:inputText label="Last Name" value="#{login.lastName}"/><br/>
 
-                <h:commandButton action="#{login.register}" 
-                                 value="Register"
-                                 class="bttn-gradient bttn-md"/>
+            <h:commandButton action="#{login.register}" 
+                             value="Register"/>
 
-            </h:form>
-        </div>
+        </h:form>
+
     </h:body>
 </html>

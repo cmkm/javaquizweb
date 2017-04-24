@@ -82,6 +82,12 @@ public class Login implements Serializable {
     
     // called from login form at Login.xhtml
     public String submit() {
+        if (this.username == null || this.password == null) {
+            FacesContext.getCurrentInstance().addMessage(null, 
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR, "Please enter username and password", null));
+            return "/Login.xhtml";
+        }
+        
         Connection connection = DatabaseController.getConnection();
         
         try {

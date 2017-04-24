@@ -28,10 +28,12 @@ and open the template in the editor.
         <h:form>
             
             <strong>Username</strong><br/>
-            <h:inputText label="Username" value="#{login.username}"/><br/>
+            <h:inputText label="Username" value="#{login.username}" 
+                         required="true" requiredMessage="Username is required"/><br/>
             
             <strong>Password</strong><br/>
-            <h:inputSecret label="Password" value="#{login.password}"/><br/>
+            <h:inputSecret label="Password" value="#{login.password}" 
+                           required="true" requiredMessage="Password is required"/><br/>
             
             <h:commandButton action="#{login.submit()}" value="Log In"/>
             <h:button outcome="Register" value="Register"/>
