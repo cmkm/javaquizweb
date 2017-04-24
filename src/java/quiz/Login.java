@@ -25,7 +25,6 @@ import javax.faces.context.FacesContext;
  * 
  * https://maxkatz.org/2009/08/17/learning-jsf2-managed-beans/
  */
-@Named(value = "login")
 @ManagedBean(name = "login", eager=true)
 @SessionScoped
 public class Login implements Serializable {

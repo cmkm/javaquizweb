@@ -20,8 +20,11 @@ import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
+import org.apache.commons.lang3.StringEscapeUtils;
 
 /**
  *
@@ -33,7 +36,7 @@ public class Data implements Serializable {
     
     private int selectedChapter;
     private ArrayList<QuestionBean> questions;
-    private String username = "tim";
+    private String username;
     private String hostname;
 
     /**
@@ -72,7 +75,10 @@ public class Data implements Serializable {
             ps.setString(1, chapter + "");
             ResultSet rs = ps.executeQuery();
                     
-            if (rs.next()) {
+            while (rs.next()) {
+                String raw = rs.getString("question");
+                System.out.println(raw);
+                
                 fetchedQuestions.add(new QuestionBean(rs.getInt("questionNo"), 
                         rs.getString("question"), rs.getString("choiceA"), 
                         rs.getString("choiceB"), rs.getString("choiceC"), 
